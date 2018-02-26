@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ajax File Upload with Progress Bar</title>
+<!-- Include jQuery form & jQuery script file. -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js" ></script>
+<script src="http://malsup.github.com/jquery.form.js" ></script>
+<script src="js/fileUploadScript.js" ></script>
+<!-- Include css styles here -->
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"> 
+$(document).ready(function() {
+	var options = {
+	        beforeSend : function() {
+	                $("#progressbox").show();
+	                // clear everything
+	                $("#progressbar").width('0%');
+	                $("#message").empty();
+	                $("#percent").html("0%");
+	        },
+	        uploadProgress : function(event, position, total, percentComplete) {
+	                $("#progressbar").width(percentComplete + '%');
+	                $("#percent").html(percentComplete + '%');
+
+	                // change message text to red after 50%
+	                if (percentComplete > 50) {
+	                $("#message").html("<font color='red'>File Upload is in progress</font>");
+	                }
+	        },
+	        success : function() {
+	                $("#progressbar").width('100%');
+	                $("#percent").html('100%');
+	        },
+	        complete : function(response) {
+	        $("#message").html("<font color='blue'>Your file has been uploaded!</font>");
+	        },
+	        error : function() {
+	        $("#message").html("<font color='red'> ERROR: unable to upload files</font>");
+	        }
+	};
+	$("#UploadForm").ajaxForm(options);
+	});
+</script>
+</head>
+<body>
+<h3>Ajax File Upload with Progress Bar</h3>
+ <form id="UploadForm" action="up" method="post" enctype="multipart/form-data">
+    <input type="file" size="60" id="myfile" name="myfile"> 
+     <input type="submit" value="Ajax File Upload">
+       <div id="progressbox">
+         <div id="progressbar"></div>
+         <div id="percent">0%</div>
+       </div>
+ <br />
+<div id="message"></div>
+</form>
+</body>
+</html>
